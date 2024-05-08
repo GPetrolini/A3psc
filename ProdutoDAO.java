@@ -22,7 +22,7 @@ public class ProdutoDAO {
         int maiorID = 0;
         try {
             Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT MAX(id) id FROM tb_alunos");
+            ResultSet res = stmt.executeQuery("SELECT MAX(id) id FROM tb_produtos");
             res.next();
             maiorID = res.getInt("id");
 
