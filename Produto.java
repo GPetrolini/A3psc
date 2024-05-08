@@ -1,6 +1,4 @@
 package Model;
-
-
 import DAO.ProdutoDAO;
 import java.util.*;
 import java.sql.SQLException;
@@ -79,17 +77,6 @@ public class Produto {
         this.datacadastro = datacadastro;
     }
 
-    @Override
-    public String toString() {
-        return "\n ID: " + this.getId()
-                + "\n Nome: " + this.getNome()
-                + "\n Idade: " + this.getDescricao()
-                + "\n Curso: " + this.getQuantidade()
-                + "\n Fase:" + this.getPreco()
-                + "\n DataCadastro: " + getDatacadastro()
-                + "\n -----------";
-
-    }
 
     public ArrayList getMinhaLista() {
         return dao.getMinhaLista();
