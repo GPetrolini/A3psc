@@ -4,19 +4,13 @@ import java.util.*;
 import java.sql.SQLException;
 
 public class Produto {
-
-// atributos
     private int id;
     private String nome;
     private String descricao;
     private int quantidade;
     private double preco;
     private String datacadastro;
-    private final ProdutoDAO dao;
-
-    public Produto() {
-        this.dao = new ProdutoDAO();
-    }
+    private ProdutoDAO dao;
 
     public Produto(int id, String nome, String descricao, int quantidade, double preco, String datacadastro) {
         this.id = id;
@@ -25,63 +19,21 @@ public class Produto {
         this.quantidade = quantidade;
         this.preco = preco;
         this.datacadastro = datacadastro;
-        this.dao = new ProdutoDAO();
+        try {
+            this.dao = new ProdutoDAO();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao criar instância de ProdutoDAO", e);
+        }
     }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
-    public String getDatacadastro() {
-        return datacadastro;
-    }
-
-    public void setDatacadastro(String datacadastro) {
-        this.datacadastro = datacadastro;
-    }
-
 
     public ArrayList getMinhaLista() {
-        return dao.getMinhaLista();
+        try {
+            return dao.getMinhaLista();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao obter lista de produtos, verificar se as informações escritas estão corretas", e);
+        }
     }
-
+}
     public boolean InsertProdutoBD(int id, String nome, String descricao, int quantidade, double preco, String datacadastro) throws SQLException {
         int ID = this.maiorID() + 1;
         Produto objeto = new Produto(quantidade, nome, descricao, quantidade, preco, datacadastro);
