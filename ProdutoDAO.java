@@ -83,7 +83,7 @@ public class ProdutoDAO {
                 int id = res.getInt("id");
                 String nome = res.getString("nome");
                 String descricao = res.getString("descricao");
-                int quantidade = res.getInt("preco");
+                int quantidade = res.getInt("quantidade");
                 double preco = res.getDouble("preco");
                 String datacadastro = res.getString("datacadastro");
                 
