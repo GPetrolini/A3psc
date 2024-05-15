@@ -1,2 +1,2 @@
 # A3psc
-Criação de banco de dados e CRUD
+Avaliação A3 de Programação e solução computacionais
