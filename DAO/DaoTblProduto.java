@@ -8,22 +8,38 @@ import java.util.List;
 public class DaoTblProduto {
 
     public static ArrayList<Produto> MinhaLista = new ArrayList<Produto>();
-    
+
     public DaoTblProduto() {
     }
 
-    public int maiorID() throws SQLException {
-        int maiorID = 0;
+    public int getProximoID() throws SQLException {
+        int proximoID = 1; // Inicia com 1 como valor padrão
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet res = null;
+
         try {
-            Statement stmt = this.getConexao().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT MAX(id) id FROM tb_produtos");
-            res.next();
-            maiorID = res.getInt("id");
-            stmt.close();
+            connection = getConexao();
+            stmt = connection.createStatement();
+            res = stmt.executeQuery("SELECT MAX(id) AS max_id FROM tb_produtos");
+
+            if (res.next()) {
+                proximoID = res.getInt("max_id") + 1; // Incrementa o maior ID encontrado
+            }
         } catch (SQLException ex) {
             System.out.println("Erro ao buscar maior ID: " + ex.getMessage());
+        } finally {
+            if (res != null) {
+                res.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
-        return maiorID;
+        return proximoID;
     }
 
     public Connection getConexao() {
@@ -56,16 +72,17 @@ public class DaoTblProduto {
     }
 
     public boolean salvarProdutoBD(Produto produto) throws SQLException {
-        String sql = "INSERT INTO tb_produtos (nome, descricao, quantidade, preco, datacadastro) VALUES (?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement stmt = this.getConexao().prepareStatement(sql);
-            stmt.setString(1, produto.getNome());
-            stmt.setString(2, produto.getDescricao());
-            stmt.setInt(3, produto.getQuantidade());
-            stmt.setDouble(4, produto.getPreco());
-            stmt.setDate(5, produto.getDatacadastro()); // Ajuste aqui para usar java.sql.Date
+        produto.setId(getProximoID());
+        String sql = "INSERT INTO tb_produtos (id, nome, descricao, quantidade, preco, datacadastro) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection connection = getConexao(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, produto.getId());
+            stmt.setString(2, produto.getNome());
+            stmt.setString(3, produto.getDescricao());
+            stmt.setInt(4, produto.getQuantidade());
+            stmt.setDouble(5, produto.getPreco());
+            stmt.setDate(6, produto.getDatacadastro());
             stmt.execute();
-            stmt.close();
             return true;
         } catch (SQLException erro) {
             System.out.println("Erro ao salvar produto: " + erro.getMessage());

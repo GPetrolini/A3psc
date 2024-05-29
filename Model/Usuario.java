@@ -2,7 +2,7 @@ package Model;
 
 import DAO.DAOUsuario;
 import java.sql.SQLException;
-import java.util.List;
+import java.sql.ResultSet;
 
 public class Usuario {
     private int id_usuario;
@@ -55,66 +55,23 @@ public class Usuario {
     public void setSenha_usuario(String senha_usuario) {
         this.senha_usuario = senha_usuario;
     }
-
-    // Métodos de controle
-    public boolean salvarUsuario() {
-        try {
-            return this.daoUsuario.salvarUsuarioBD(this);
-        } catch (SQLException e) {
-            System.out.println("OCORREU UM ERRO AO SALVAR USUÁRIO\n METODO: salvarUsuarioBD\n erro: " + e);
-            return false;
-        }
+    
+    public boolean salvarUsuario() throws SQLException {
+        return this.daoUsuario.InsertUsuarioBD(this);
     }
 
-    public List<Usuario> listarUsuarios() {
-        try {
-            return this.daoUsuario.listarUsuariosBD();
-        } catch (SQLException e) {
-            System.out.println("OCORREU UM ERRO AO LISTAR USUÁRIOS\n METODO: listarUsuariosBD\n erro: " + e);
-            return null;
+    public Usuario autenticarUsuario(String login_usuario, String senha_usuario) throws SQLException {
+        this.login_usuario = login_usuario;
+        this.senha_usuario = senha_usuario;
+        ResultSet rs = this.daoUsuario.autenticacaoUsuario(this);
+        if (rs.next()) {
+            this.id_usuario = rs.getInt("id_usuario");
+            this.nome_usuario = rs.getString("nome_usuario");
+            return this;
         }
+        return null;
     }
-
-    public Usuario getUsuario(int id_usuario) {
-        try {
-            return this.daoUsuario.buscarUsuarioBD(id_usuario);
-        } catch (SQLException e) {
-            System.out.println("OCORREU UM ERRO AO BUSCAR USUÁRIO ATRAVÉS DO SEU ID\n METODO: buscarUsuarioBD\n erro: " + e);
-            return null;
-        }
-    }
-
-    public boolean atualizarUsuario() {
-        try {
-            return this.daoUsuario.atualizarUsuarioBD(this);
-        } catch (SQLException e) {
-            System.out.println("OCORREU UM ERRO AO ATUALIZAR USUÁRIO\n METODO: atualizarUsuarioBD\n erro: " + e);
-            return false;
-        }
-    }
-
-    public boolean excluirUsuario(int id_usuario) {
-        if (id_usuario > 0) {
-            try {
-                return this.daoUsuario.excluirUsuarioBD(id_usuario);
-            } catch (SQLException ex) {
-                System.out.println("ERRO NA EXCLUSÃO DE UM USUÁRIO: " + ex);
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public Usuario autenticarUsuario(String login_usuario, String senha_usuario) {
-        try {
-            return this.daoUsuario.autenticarUsuarioBD(login_usuario, senha_usuario);
-        } catch (SQLException e) {
-            System.out.println("OCORREU UM ERRO AO AUTENTICAR USUÁRIO\n METODO: autenticarUsuarioBD\n erro: " + e);
-            return null;
-        }
-    }
-
+    
     @Override
     public String toString() {
         return "\n ID: " + this.getId_usuario()

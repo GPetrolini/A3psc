@@ -1,12 +1,12 @@
 package Principal;
 
-//import View.TelaPrincipal;
+import View.BemVindo;
 
 public class Principal {
 
-//    public static void main(String[] args) {
-//        TelaPrincipal objetotela = new TelaPrincipal();
-//        objetotela.setVisible(true);
-//    }
+    public static void main(String[] args) {
+        BemVindo telaInicial = new BemVindo();
+        telaInicial.setVisible(true);
+    }
     
 }
