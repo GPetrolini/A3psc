@@ -26,8 +26,12 @@ Estrutura do Projeto
 
 git clone https://github.com/GPetrolini/A3psc.git
 Importe o projeto em sua IDE Java preferida.
+
+
 Configure a conexão com o banco de dados MySQL no arquivo de configuração apropriado.
+
 Execute a classe principal para iniciar a aplicação.
+
 Contribuição
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
 
